@@ -1,43 +1,51 @@
-# Action Recognition using CLIP
+# Video Action Recognition using CLIP
 
-## Overview
-This project implements real-time action recognition using OpenAI's CLIP model. It processes webcam frames and classifies detected actions based on predefined descriptions.
+This project captures live video clips from a webcam, processes them using OpenAI's CLIP model to classify human actions, and labels the detected actions on the video frames. The processed videos are saved with corresponding detection logs.
 
-## Requirements
-Ensure you have the necessary dependencies installed. You can install them using:
-```bash
-pip install -r requirements.txt
+## Features
+- Captures 5-second video clips from a webcam.
+- Uses CLIP (ViT-L-14-quickgelu) to classify actions.
+- Categorizes actions into primary (e.g., normal, running, violence) and secondary (e.g., punching, falling, shouting).
+- Saves labeled videos and logs detection results.
+- Runs in a multi-threaded setup with separate producer and consumer threads.
+
+## Installation
+Ensure you have Python 3.8+ installed. Then, install the required dependencies:
+
+```sh
+pip install torch torchvision torchaudio open-clip-torch opencv-python numpy pillow
 ```
-
-## Setup
-1. Clone the repository or download the script.
-2. Ensure you have Python installed (version 3.7 or later).
-3. Install dependencies using the above command.
-4. If using a GPU, ensure CUDA is installed and available.
 
 ## Usage
-To run the script, execute:
-```bash
-python vit.py
+Run the script to start capturing and processing videos:
+
+```sh
+python specialized_gesture_detection.py
 ```
-Press 'q' to exit the real-time webcam detection.
 
-## Action Descriptions
-The following actions are recognized based on descriptions:
-- **Punching**: A person is violently punching another person.
-- **Kicking**: A person is aggressively kicking another person.
-- **Slapping**: A person is slapping another person aggressively.
-- **Pushing**: A person is forcefully pushing another person.
-- **Shouting**: A person is yelling aggressively.
-- **Falling**: A person is falling down.
-- **Running**: A person is running away in panic.
-- **Normal**: A person is behaving normally.
+### Key Directories
+- `video4_clips/`: Stores captured raw video clips.
+- `labelled4_videos/`: Contains processed videos with action labels, organized by date.
 
-## Troubleshooting
-- **Webcam not opening?** Try changing `cv2.VideoCapture(0)` to `cv2.VideoCapture(1)`.
-- **Low accuracy?** Adjust the confidence threshold in the script.
-- **GPU not used?** Ensure `torch.cuda.is_available()` returns `True` and the model is moved to `cuda`.
+### Log File Structure
+Each processed video has a corresponding log file (`detection_log.txt`), storing action counts in JSON format:
+
+```json
+{
+    "labelled_20240510_123456.mp4": {
+        "primary_counts": {"normal": 10, "running": 5, "violence": 2},
+        "secondary_counts": {"punching": 1, "shoving": 1,........}
+    }
+}
+```
+
+## Stopping the Script
+To stop video capturing, press `q`.
+
+## Notes
+- Ensure your camera is accessible before running the script.
+- Adjust classification thresholds if needed in the `thresholds` dictionary.
 
 ## License
-This project is for educational purposes and follows OpenAI's CLIP model usage guidelines.
+This project is open-source and free to use.
 
