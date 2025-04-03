@@ -1,0 +1,6 @@
+torch
+open-clip-torch
+opencv-python
+numpy
+Pillow
+moviepy
