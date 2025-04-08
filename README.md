@@ -34,7 +34,7 @@ Each processed video has a corresponding log file (`detection_log.txt`), storing
 {
     "labelled_20240510_123456.mp4": {
         "primary_counts": {"normal": 10, "running": 5, "violence": 2,"falling":1},
-        "secondary_counts": {"punching": 1, "shoving": 1,........}
+        "secondary_counts": {"punching": 1, "shoving": 1}
     }
 }
 ```
