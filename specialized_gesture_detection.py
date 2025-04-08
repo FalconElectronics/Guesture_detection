@@ -133,7 +133,7 @@ def process_videos():
             best_category = label_map[best_description]
             best_score = similarity.max().item()
             
-            thresholds = {"normal": 0.85, "running": 0.85, "violence": 0.85, "falling": 0.85}
+            thresholds = {"normal": 0.95, "running": 0.95, "violence": 0.95, "falling": 0.95}
             detected_class = "normal"
             if best_score >= thresholds.get(best_category, 0):
                 detected_class = best_category
