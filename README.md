@@ -5,7 +5,7 @@ This project captures live video clips from a webcam, processes them using OpenA
 ## Features
 - Captures 5-second video clips from a webcam.
 - Uses CLIP (ViT-L-14-quickgelu) to classify actions.
-- Categorizes actions into primary (e.g., normal, running, violence) and secondary (e.g., punching, falling, shouting).
+- Categorizes actions into primary (e.g., normal, running, violence) and secondary (e.g., punching, shoving, shouting).
 - Saves labeled videos and logs detection results.
 - Runs in a multi-threaded setup with separate producer and consumer threads.
 
@@ -33,8 +33,8 @@ Each processed video has a corresponding log file (`detection_log.txt`), storing
 ```json
 {
     "labelled_20240510_123456.mp4": {
-        "primary_counts": {"normal": 10, "running": 5, "violence": 2},
-        "secondary_counts": {"punching": 1, "shoving": 1,........}
+        "primary_counts": {"normal": 10, "running": 5, "violence": 2,"falling":1},
+        "secondary_counts": {"punching": 1, "shoving": 1}
     }
 }
 ```
