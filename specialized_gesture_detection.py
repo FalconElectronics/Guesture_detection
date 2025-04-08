@@ -19,15 +19,18 @@ model = model.to(device)
 
 # Define action categories
 primary_classes = {
-    "normal": ["normal"],
+    "violence": ["violence"],
     "running": ["running", "sprinting", "jogging"],
-    "violence": ["violence"]
+    "falling": ["a person is unexpectedly falling down",
+        "a person is collapsing to the ground",
+        "a person is tripping and falling forward",
+        "a person loses balance and falls backward"],
+    "normal": ["normal","people are walking"]
 }
 secondary_classes = {
     "punching": ["punching", "throwing a punch"],
     "hitting": ["hitting", "slapping", "beating", "kicking"],
     "shoving": ["pushing", "shoving"],
-    "falling": ["falling", "tripping", "stumbling", "slipping", "losing balance", "falling down"],
     "shouting": ["shouting", "yelling", "screaming"]
 }
 
@@ -110,7 +113,7 @@ def process_videos():
         out_clip = cv2.VideoWriter(labelled_video_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (frame_width, frame_height))
 
         # Dictionary to store detections
-        detection_counts = {"normal": 0, "running": 0, "violence": 0}
+        detection_counts = {"normal": 0, "running": 0, "violence": 0, "falling":0}
         action_counts = {action: 0 for action in secondary_classes.keys()}
 
         while cap_clip.isOpened():
@@ -130,7 +133,7 @@ def process_videos():
             best_category = label_map[best_description]
             best_score = similarity.max().item()
             
-            thresholds = {"normal": 0.85, "running": 0.85, "violence": 0.85}
+            thresholds = {"normal": 0.85, "running": 0.85, "violence": 0.85, "falling": 0.85}
             detected_class = "normal"
             if best_score >= thresholds.get(best_category, 0):
                 detected_class = best_category
@@ -153,7 +156,7 @@ def process_videos():
                     action_counts[best_action] += 1  # Update action count
             
             label_text = f"{detected_class.upper()} - {action_text} ({best_score:.2f})"
-            color = (0, 255, 0) if detected_class == "normal" else (255, 0, 0) if detected_class == "running" else (0, 0, 255)
+            color = (0, 255, 0) if detected_class == "normal" else (255, 0, 0) if detected_class == "running" else (0, 0, 255) if detected_class=="violence" else (255,165,0)
             cv2.putText(frame, label_text, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2, cv2.LINE_AA)
 
             out_clip.write(frame)
